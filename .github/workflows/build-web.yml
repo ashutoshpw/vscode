@@ -9,7 +9,7 @@ on:
 jobs:
   build-web:
     name: Build vscode-web (linux x64)
-    runs-on: [ self-hosted, 1ES.Pool=1es-vscode-oss-ubuntu-22.04-x64 ]
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
       NPM_ARCH: x64
