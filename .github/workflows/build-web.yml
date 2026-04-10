@@ -16,9 +16,20 @@ jobs:
       VSCODE_ARCH: x64
       ELECTRON_SKIP_BINARY_DOWNLOAD: 1
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      NODE_OPTIONS: "--max-old-space-size=6144"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Free disk space and create swap
+        run: |
+          set -e
+          sudo swapoff -a || true
+          sudo fallocate -l 4G /mnt/swapfile
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          echo "Swap enabled: $(swapon --show)"
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -121,7 +132,7 @@ jobs:
           key: "builtin-extensions-${{ hashFiles('.build/builtindepshash') }}"
 
       - name: Build vscode-web (minified)
-        run: npm run gulp vscode-web-min
+        run: node --max-old-space-size=6144 ./node_modules/gulp/bin/gulp.js vscode-web-min
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
