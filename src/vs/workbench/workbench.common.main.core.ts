@@ -1,0 +1,357 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/**
+ * Core workbench registrations for a repository-configured web profile.
+ * Optional registrations live in `features/`; keep baseline dependencies here.
+ */
+
+//#region --- editor/workbench core
+
+import '../editor/editor.all.js';
+
+import './browser/workbench.contribution.js';
+
+//#endregion
+
+
+//#region --- workbench actions
+
+import './browser/actions/textInputActions.js';
+import './browser/actions/developerActions.js';
+import './browser/actions/helpActions.js';
+import './browser/actions/layoutActions.js';
+import './browser/actions/listCommands.js';
+import './browser/actions/navigationActions.js';
+import './browser/actions/windowActions.js';
+import './browser/actions/workspaceActions.js';
+import './browser/actions/workspaceCommands.js';
+import './browser/actions/quickAccessActions.js';
+import './browser/actions/widgetNavigationCommands.js';
+
+//#endregion
+
+
+//#region --- API Extension Points
+
+import './services/actions/common/menusExtensionPoint.js';
+import './api/common/configurationExtensionPoint.js';
+import './api/browser/viewsExtensionPoint.js';
+
+//#endregion
+
+
+//#region --- workbench parts
+
+import './browser/parts/editor/editor.contribution.js';
+import './browser/parts/editor/editorParts.js';
+import './browser/parts/paneCompositePartService.js';
+import './browser/parts/banner/bannerPart.js';
+import './browser/parts/statusbar/statusbarPart.js';
+
+//#endregion
+
+
+//#region --- workbench services
+
+import '../platform/actions/common/actions.contribution.js';
+import '../platform/undoRedo/common/undoRedoService.js';
+import './services/workspaces/common/editSessionIdentityService.js';
+import './services/workspaces/common/canonicalUriService.js';
+import './services/extensions/browser/extensionUrlHandler.js';
+import './services/keybinding/common/keybindingEditing.js';
+import './services/decorations/browser/decorationsService.js';
+import './services/dialogs/common/dialogService.js';
+import './services/progress/browser/progressService.js';
+import './services/editor/browser/codeEditorService.js';
+import './services/preferences/browser/preferencesService.js';
+import './services/configuration/common/jsonEditingService.js';
+import './services/textmodelResolver/common/textModelResolverService.js';
+import './services/editor/browser/editorService.js';
+import './services/editor/browser/editorResolverService.js';
+import './services/history/browser/historyService.js';
+import './services/activity/browser/activityService.js';
+import './services/keybinding/browser/keybindingService.js';
+import './services/untitled/common/untitledTextEditorService.js';
+import './services/textresourceProperties/common/textResourcePropertiesService.js';
+import './services/textfile/common/textEditorService.js';
+import './services/language/common/languageService.js';
+import './services/model/common/modelService.js';
+import './services/commands/common/commandService.js';
+import './services/themes/browser/workbenchThemeService.js';
+import './services/label/common/labelService.js';
+import './services/extensions/common/extensionManifestPropertiesService.js';
+import './services/extensionManagement/common/extensionGalleryService.js';
+import './services/extensionManagement/browser/extensionEnablementService.js';
+import './services/extensionManagement/browser/builtinExtensionsScannerService.js';
+import './services/extensionRecommendations/common/extensionIgnoredRecommendationsService.js';
+import './services/extensionRecommendations/common/workspaceExtensionsConfig.js';
+import './services/extensionManagement/common/extensionFeaturesManagemetService.js';
+import './services/notification/common/notificationService.js';
+import './services/userDataSync/common/userDataSyncUtil.js';
+import './services/userDataProfile/browser/userDataProfileImportExportService.js';
+import './services/userDataProfile/browser/userDataProfileManagement.js';
+import './services/userDataProfile/common/remoteUserDataProfiles.js';
+import './services/remote/common/remoteExtensionsScanner.js';
+import './services/workingCopy/common/workingCopyService.js';
+import './services/workingCopy/common/workingCopyFileService.js';
+import './services/workingCopy/common/workingCopyEditorService.js';
+import './services/filesConfiguration/common/filesConfigurationService.js';
+import './services/views/browser/viewDescriptorService.js';
+import './services/views/browser/viewsService.js';
+import './services/quickinput/browser/quickInputService.js';
+import './services/userDataSync/browser/userDataSyncWorkbenchService.js';
+import './services/authentication/browser/authenticationService.js';
+import './services/authentication/browser/authenticationExtensionsService.js';
+import './services/authentication/browser/authenticationUsageService.js';
+import './services/authentication/browser/authenticationAccessService.js';
+import './services/authentication/browser/authenticationMcpUsageService.js';
+import './services/authentication/browser/authenticationMcpAccessService.js';
+import './services/authentication/browser/authenticationMcpService.js';
+import './services/authentication/browser/dynamicAuthenticationProviderStorageService.js';
+import './services/authentication/browser/authenticationQueryService.js';
+import '../platform/hover/browser/hoverService.js';
+import './services/assignment/common/assignmentService.js';
+import './services/outline/browser/outlineService.js';
+import './services/languageDetection/browser/languageDetectionWorkerServiceImpl.js';
+import '../editor/common/services/languageFeaturesService.js';
+import '../editor/common/services/semanticTokensStylingService.js';
+import '../editor/common/services/treeViewsDndService.js';
+import './services/textMate/browser/textMateTokenizationFeature.contribution.js';
+import './services/treeSitter/browser/treeSitter.contribution.js';
+import './services/userActivity/common/userActivityService.js';
+import './services/userActivity/browser/userActivityBrowser.js';
+import './services/userAttention/browser/userAttentionBrowser.js';
+import './services/editor/browser/editorPaneService.js';
+import './services/editor/common/customEditorLabelService.js';
+import './services/dataChannel/browser/dataChannelService.js';
+import './services/log/common/defaultLogLevels.js';
+
+import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';
+import { GlobalExtensionEnablementService } from '../platform/extensionManagement/common/extensionEnablementService.js';
+import { IAllowedExtensionsService, IGlobalExtensionEnablementService } from '../platform/extensionManagement/common/extensionManagement.js';
+import { ContextViewService } from '../platform/contextview/browser/contextViewService.js';
+import { IContextViewService } from '../platform/contextview/browser/contextView.js';
+import { IListService, ListService } from '../platform/list/browser/listService.js';
+import { MarkerDecorationsService } from '../editor/common/services/markerDecorationsService.js';
+import { IMarkerDecorationsService } from '../editor/common/services/markerDecorations.js';
+import { IMarkerService } from '../platform/markers/common/markers.js';
+import { MarkerService } from '../platform/markers/common/markerService.js';
+import { ContextKeyService } from '../platform/contextkey/browser/contextKeyService.js';
+import { IContextKeyService } from '../platform/contextkey/common/contextkey.js';
+import { ITextResourceConfigurationService } from '../editor/common/services/textResourceConfiguration.js';
+import { TextResourceConfigurationService } from '../editor/common/services/textResourceConfigurationService.js';
+import { IDownloadService } from '../platform/download/common/download.js';
+import { DownloadService } from '../platform/download/common/downloadService.js';
+import { OpenerService } from '../editor/browser/services/openerService.js';
+import { IOpenerService } from '../platform/opener/common/opener.js';
+import { IgnoredExtensionsManagementService, IIgnoredExtensionsManagementService } from '../platform/userDataSync/common/ignoredExtensions.js';
+import { ExtensionStorageService, IExtensionStorageService } from '../platform/extensionManagement/common/extensionStorage.js';
+import { IUserDataSyncLogService } from '../platform/userDataSync/common/userDataSync.js';
+import { UserDataSyncLogService } from '../platform/userDataSync/common/userDataSyncLog.js';
+import { AllowedExtensionsService } from '../platform/extensionManagement/common/allowedExtensionsService.js';
+import { IAllowedMcpServersService, IMcpGalleryService } from '../platform/mcp/common/mcpManagement.js';
+import { McpGalleryService } from '../platform/mcp/common/mcpGalleryService.js';
+import { AllowedMcpServersService } from '../platform/mcp/common/allowedMcpServersService.js';
+import { IWebWorkerService } from '../platform/webWorker/browser/webWorkerService.js';
+import { WebWorkerService } from '../platform/webWorker/browser/webWorkerServiceImpl.js';
+import { AccessibilitySignalService, IAccessibilitySignalService } from '../platform/accessibilitySignal/browser/accessibilitySignalService.js';
+
+registerSingleton(IUserDataSyncLogService, UserDataSyncLogService, InstantiationType.Delayed);
+registerSingleton(IAllowedExtensionsService, AllowedExtensionsService, InstantiationType.Delayed);
+registerSingleton(IIgnoredExtensionsManagementService, IgnoredExtensionsManagementService, InstantiationType.Delayed);
+registerSingleton(IGlobalExtensionEnablementService, GlobalExtensionEnablementService, InstantiationType.Delayed);
+registerSingleton(IExtensionStorageService, ExtensionStorageService, InstantiationType.Delayed);
+registerSingleton(IContextViewService, ContextViewService, InstantiationType.Delayed);
+registerSingleton(IListService, ListService, InstantiationType.Delayed);
+registerSingleton(IMarkerDecorationsService, MarkerDecorationsService, InstantiationType.Delayed);
+registerSingleton(IMarkerService, MarkerService, InstantiationType.Delayed);
+registerSingleton(IContextKeyService, ContextKeyService, InstantiationType.Delayed);
+registerSingleton(ITextResourceConfigurationService, TextResourceConfigurationService, InstantiationType.Delayed);
+registerSingleton(IDownloadService, DownloadService, InstantiationType.Delayed);
+registerSingleton(IOpenerService, OpenerService, InstantiationType.Delayed);
+registerSingleton(IWebWorkerService, WebWorkerService, InstantiationType.Delayed);
+registerSingleton(IMcpGalleryService, McpGalleryService, InstantiationType.Delayed);
+registerSingleton(IAllowedMcpServersService, AllowedMcpServersService, InstantiationType.Delayed);
+registerSingleton(IAccessibilitySignalService, AccessibilitySignalService, InstantiationType.Delayed);
+
+//#endregion
+
+
+//#region --- workbench contributions
+
+// Default Account
+import './services/accounts/common/defaultAccount.js';
+
+// Preferences
+
+// Performance
+import './contrib/performance/browser/performance.contribution.js';
+
+// Notebook
+
+// Speech
+import './contrib/speech/browser/speech.contribution.js';
+
+// Chat
+
+// Interactive
+
+// repl
+
+// Testing
+
+// Logs
+
+// Quickaccess
+import './contrib/quickaccess/browser/quickAccess.contribution.js';
+
+// Explorer
+import './contrib/files/browser/explorerViewlet.js';
+import './contrib/files/browser/fileActions.contribution.js';
+import './contrib/files/browser/files.contribution.js';
+
+// Bulk Edit
+import './contrib/bulkEdit/browser/bulkEditService.js';
+import './contrib/bulkEdit/browser/preview/bulkEdit.contribution.js';
+
+// Search
+
+// Search Editor
+
+// Sash
+import './contrib/sash/browser/sash.contribution.js';
+
+// SCM
+
+// Debug
+
+// Markers
+
+// Process Explorer
+
+// Merge Editor
+
+// Multi Diff Editor
+
+// Commands
+import './contrib/commands/common/commands.contribution.js';
+
+// Comments
+
+// URL Support
+import './contrib/url/browser/url.contribution.js';
+
+// Webview
+
+// External Uri Opener
+import './contrib/externalUriOpener/common/externalUriOpener.contribution.js';
+
+// Extensions Management
+
+// Output View
+
+// Terminal
+
+// External terminal
+
+// Relauncher
+import './contrib/relauncher/browser/relauncher.contribution.js';
+
+// Tasks
+
+// Emmet
+import './contrib/emmet/browser/emmet.contribution.js';
+
+// CodeEditor Contributions
+import './contrib/codeEditor/browser/codeEditor.contribution.js';
+
+// Markdown
+import './contrib/markdown/browser/markdown.contribution.js';
+
+// Keybindings Contributions
+import './contrib/keybindings/browser/keybindings.contribution.js';
+
+// Snippets
+import './contrib/snippets/browser/snippets.contribution.js';
+
+// Folding
+import './contrib/folding/browser/folding.contribution.js';
+
+// Limit Indicator
+import './contrib/limitIndicator/browser/limitIndicator.contribution.js';
+
+// Inlay Hint Accessibility
+import './contrib/inlayHints/browser/inlayHintsAccessibilty.js';
+
+// Themes
+import './contrib/themes/browser/themes.contribution.js';
+
+// Update
+import './contrib/update/browser/update.contribution.js';
+
+// Surveys
+import './contrib/surveys/browser/nps.contribution.js';
+import './contrib/surveys/browser/languageSurveys.contribution.js';
+
+// Welcome
+
+// Call Hierarchy
+import './contrib/callHierarchy/browser/callHierarchy.contribution.js';
+
+// Type Hierarchy
+import './contrib/typeHierarchy/browser/typeHierarchy.contribution.js';
+
+// Language Detection
+import './contrib/languageDetection/browser/languageDetection.contribution.js';
+
+// Language Status
+import './contrib/languageStatus/browser/languageStatus.contribution.js';
+
+// Authentication
+import './contrib/authentication/browser/authentication.contribution.js';
+
+// User Data Profiles
+import './contrib/userDataProfile/browser/userDataProfile.contribution.js';
+
+// Remote Coding Agents
+import './contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution.js';
+
+// Code Actions
+import './contrib/codeActions/browser/codeActions.contribution.js';
+
+// Timeline
+
+// Workspace
+import './contrib/workspace/browser/workspace.contribution.js';
+
+// Workspaces
+import './contrib/workspaces/browser/workspaces.contribution.js';
+
+// List
+import './contrib/list/browser/list.contribution.js';
+
+// Accessibility
+import './contrib/accessibility/browser/accessibility.contribution.js';
+
+// Share
+import './contrib/share/browser/share.contribution.js';
+
+// Synchronized Scrolling
+import './contrib/scrollLocking/browser/scrollLocking.contribution.js';
+
+// Inline Completions
+import './contrib/inlineCompletions/browser/inlineCompletions.contribution.js';
+
+// Drop or paste into
+import './contrib/dropOrPasteInto/browser/dropOrPasteInto.contribution.js';
+
+// Edit Telemetry
+import './contrib/editTelemetry/browser/editTelemetry.contribution.js';
+
+// Opener
+import './contrib/opener/browser/opener.contribution.js';
+
+//#endregion

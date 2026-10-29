@@ -431,6 +431,8 @@ function packageTask(type: string, platform: string, arch: string, sourceFolderN
 				this.emit('data', file);
 			}));
 
+		const vscodeConfigurationStream = gulp.src(['vscode.jsonc', 'vscode.json'], { base: '.', allowEmpty: true });
+
 		const license = gulp.src(['remote/LICENSE'], { base: 'remote', allowEmpty: true });
 
 		const jsFilter = util.filter(data => !data.isDirectory() && /\.js$/.test(data.path));
@@ -469,6 +471,7 @@ function packageTask(type: string, platform: string, arch: string, sourceFolderN
 		const all = es.merge(
 			packageJsonStream,
 			productJsonStream,
+			vscodeConfigurationStream,
 			license,
 			sources,
 			deps,

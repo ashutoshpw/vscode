@@ -19,6 +19,7 @@ import type { IFolderToOpen, IWorkspaceToOpen } from '../../platform/window/comm
 import type { EditorGroupLayout } from '../services/editor/common/editorGroupsService.js';
 import type { IEmbedderTerminalOptions } from '../services/terminal/common/embedderTerminalService.js';
 import type { IAuthenticationProvider } from '../services/authentication/common/authentication.js';
+import type { WebWorkbenchFeature } from '../common/webWorkbenchFeatures.js';
 
 /**
  * The `IWorkbench` interface is the API facade for web embedders
@@ -147,6 +148,12 @@ export interface IWorkbench {
 }
 
 export interface IWorkbenchConstructionOptions {
+
+	/**
+	 * Feature groups enabled by a repository-configured web workbench. This is
+	 * intended for the VS Code web server and is not required by embedders.
+	 */
+	readonly webWorkbenchFeatures?: readonly WebWorkbenchFeature[];
 
 	//#region Connection related configuration
 

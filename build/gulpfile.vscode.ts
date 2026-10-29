@@ -364,6 +364,8 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				this.emit('data', file);
 			}));
 
+		const vscodeConfigurationStream = gulp.src(['vscode.jsonc', 'vscode.json'], { base: '.', allowEmpty: true });
+
 		const license = gulp.src([product.licenseFileName, 'ThirdPartyNotices.txt', 'licenses/**'], { base: '.', allowEmpty: true });
 
 		// TODO the API should be copied to `out` during compile, not here
@@ -444,6 +446,7 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 		const mergeStreams = [
 			packageJsonStream,
 			productJsonStream,
+			vscodeConfigurationStream,
 			license,
 			api,
 			telemetry,

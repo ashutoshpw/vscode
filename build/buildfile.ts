@@ -32,7 +32,10 @@ export const workbenchDesktop = [
 	createModuleDescription('vs/sessions/sessions.desktop.main')
 ];
 
-export const workbenchWeb = createModuleDescription('vs/workbench/workbench.web.main.internal');
+export const workbenchWeb: IEntryPoint = {
+	...createModuleDescription('vs/workbench/workbench.web.main.internal'),
+	splitting: true
+};
 
 export const sessionsWeb = createModuleDescription('vs/sessions/sessions.web.main.internal');
 
