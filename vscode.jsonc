@@ -6,9 +6,7 @@
 {
 	"webWorkbench": {
 		// Explorer, file preview, and editing are the built-in baseline.
-		// Terminal is enabled here so a remote shell opens at the default folder.
 		"enabledFeatures": [
-			"terminal",
 			// "extensions",
 			// "debugging",
 			// "sourceControl",
