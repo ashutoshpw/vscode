@@ -10,6 +10,8 @@ const path = require('path');
 const open = require('open');
 const minimist = require('minimist');
 
+const DEFAULT_FOLDER = '/home/ashutosh/PROJECTS';
+
 async function main() {
 
 	const args = minimist(process.argv.slice(2), {
@@ -31,6 +33,9 @@ async function main() {
 	process.env['VSCODE_SERVER_PORT'] = '9888';
 
 	const serverArgs = process.argv.slice(2).filter(v => v !== '--launch');
+	if (!serverArgs.some(argument => argument === '--default-folder' || argument.startsWith('--default-folder='))) {
+		serverArgs.push('--default-folder', DEFAULT_FOLDER);
+	}
 	const addr = await startServer(serverArgs);
 	if (args['launch']) {
 		open.default(addr);

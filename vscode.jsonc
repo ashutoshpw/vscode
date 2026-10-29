@@ -1,0 +1,33 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+{
+	"webWorkbench": {
+		// Explorer, file preview, and editing are the built-in baseline.
+		// Terminal is enabled here so a remote shell opens at the default folder.
+		"enabledFeatures": [
+			"terminal",
+			// "extensions",
+			// "debugging",
+			// "sourceControl",
+			// "search",
+			// "chat",
+			// "notebooks",
+			// "testing",
+			// "mergeEditor",
+			// "multiDiffEditor",
+			// "problems",
+			// "timeline",
+			// "output",
+			// "logs",
+			// "comments",
+			// "webviews",
+			// "preferences",
+			// "outline",
+			// "welcome",
+			// "portForwarding",
+		]
+	}
+}

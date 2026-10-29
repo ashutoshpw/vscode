@@ -28,6 +28,7 @@ import { CharCode } from '../../base/common/charCode.js';
 import { IExtensionManifest } from '../../platform/extensions/common/extensions.js';
 import { ICSSDevelopmentService } from '../../platform/cssDev/node/cssDevService.js';
 import { htmlAttributeEncodeValue } from '../../base/common/strings.js';
+import { parseWebWorkbenchFeaturesJsonc } from '../../workbench/common/webWorkbenchFeatures.js';
 
 const textMimeType: { [ext: string]: string | undefined } = {
 	'.html': 'text/html',
@@ -413,9 +414,23 @@ export class WebClientServer {
 			} catch (err) {/* Ignore Error */ }
 		}
 
+		let webWorkbenchFeatures: ReturnType<typeof parseWebWorkbenchFeaturesJsonc> | undefined;
+		for (const configurationFile of ['vscode.jsonc', 'vscode.json']) {
+			try {
+				const vscodeConfiguration = (await promises.readFile(join(APP_ROOT, configurationFile))).toString();
+				webWorkbenchFeatures = parseWebWorkbenchFeaturesJsonc(vscodeConfiguration);
+				break;
+			} catch (error) {
+				if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+					throw error;
+				}
+			}
+		}
+
 		const workbenchWebConfiguration = {
 			remoteAuthority,
 			serverBasePath: basePath,
+			defaultLayout: webWorkbenchFeatures?.includes('terminal') ? { views: [{ id: 'terminal' }] } : undefined,
 			_wrapWebWorkerExtHostInIframe,
 			developmentOptions: { enableSmokeTestDriver: this._environmentService.args['enable-smoke-test-driver'] ? true : undefined, logLevel: this._logService.getLevel() },
 			settingsSyncOptions: !this._environmentService.isBuilt && this._environmentService.args['enable-sync'] ? { enabled: true } : undefined,
@@ -424,6 +439,7 @@ export class WebClientServer {
 			folderUri: resolveWorkspaceURI(this._environmentService.args['default-folder']),
 			workspaceUri: resolveWorkspaceURI(this._environmentService.args['default-workspace']),
 			productConfiguration,
+			webWorkbenchFeatures,
 			callbackRoute: callbackRoute
 		};
 

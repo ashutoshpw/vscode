@@ -7,6 +7,7 @@ export interface IEntryPoint {
 	name: string;
 	include?: string[];
 	dest?: string;
+	splitting?: boolean;
 }
 
 export function removeAllTSBoilerplate(source: string) {

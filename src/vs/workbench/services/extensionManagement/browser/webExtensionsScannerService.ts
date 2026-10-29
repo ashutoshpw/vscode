@@ -196,9 +196,11 @@ export class WebExtensionsScannerService extends Disposable implements IWebExten
 	private async readSystemExtensions(): Promise<IExtension[]> {
 		const systemExtensions = await this.builtinExtensionsScannerService.scanBuiltinExtensions();
 		const cachedSystemExtensions = await Promise.all((await this.readSystemExtensionsCache()).map(e => this.toScannedExtension(e, true, ExtensionType.System)));
-
 		const result = new Map<string, IExtension>();
 		for (const extension of [...systemExtensions, ...cachedSystemExtensions]) {
+			if (this.isGitExtensionDisabled(extension.identifier.id)) {
+				continue;
+			}
 			const existing = result.get(extension.identifier.id.toLowerCase());
 			if (existing) {
 				// Incase there are duplicates always take the latest version
@@ -472,16 +474,26 @@ export class WebExtensionsScannerService extends Disposable implements IWebExten
 		// Custom builtin extensions defined through `additionalBuiltinExtensions` API
 		const customBuiltinExtensions = await this.readCustomBuiltinExtensions(scanOptions);
 		for (const extension of customBuiltinExtensions) {
+			if (this.isGitExtensionDisabled(extension.identifier.id)) {
+				continue;
+			}
 			extensions.set(extension.identifier.id.toLowerCase(), extension);
 		}
 
 		// User Installed extensions
 		const installedExtensions = await this.scanInstalledExtensions(profileLocation, scanOptions);
 		for (const extension of installedExtensions) {
+			if (this.isGitExtensionDisabled(extension.identifier.id)) {
+				continue;
+			}
 			extensions.set(extension.identifier.id.toLowerCase(), extension);
 		}
 
 		return [...extensions.values()];
+	}
+
+	private isGitExtensionDisabled(extensionId: string): boolean {
+		return extensionId.toLowerCase() === 'vscode.git' && !(this.environmentService.options?.webWorkbenchFeatures?.includes('sourceControl') ?? true);
 	}
 
 	async scanExtensionsUnderDevelopment(): Promise<IExtension[]> {
@@ -493,6 +505,9 @@ export class WebExtensionsScannerService extends Disposable implements IWebExten
 					const location = URI.revive(devExtension);
 					if (URI.isUri(location)) {
 						const webExtension = await this.toWebExtension(location);
+						if (this.isGitExtensionDisabled(webExtension.identifier.id)) {
+							return;
+						}
 						result.push(await this.toScannedExtension(webExtension, false));
 					} else {
 						this.logService.info(`Skipping the extension under development ${devExtension} as it is not URI type.`);
